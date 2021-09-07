@@ -1,0 +1,46 @@
+=head1 NAME
+
+Logger.pm
+
+=head1 SYNOPSIS
+
+   use FindBin;
+   use lib $FindBin::RealBin;
+   use Logger;
+
+=head1 DESCRIPTION
+
+Define a logger callback and start logging...
+
+=head1 EXAMPLE
+
+   use strict;
+   use warnings;
+
+   use FindBin;
+   use lib $FindBin::RealBin;
+   use Logger;
+
+   my $Logger = Logger->new( sub {
+
+      my %config = @_;
+
+      printf STDERR ( "%-7s : %s\n",
+         uc( $config{level} ),
+         sprintf( $config{msg}, $config{args} )
+      );
+   }, $ERROR );
+
+   $Logger->error( 'This is log: %s', $0 );
+   $Logger->warn( 'This is log: %s', $0 );
+   $Logger->log( 'This is log: %s', $0 );
+   $Logger->gossip( 'This is log: %s', $0 );
+   $Logger->debug( 'This is log: %s', $0 );
+
+=head1 AUTHORS
+
+=over 8
+
+=item Arne Soete (arne.soete@irc.vib-ugent.be)
+
+=back

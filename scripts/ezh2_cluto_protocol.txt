@@ -1,0 +1,14 @@
+./repeatDdmTyrantNoCache.pl EZH2_genes.list 3
+./buildRankTable.pl . EZH2_genes_vs_randomSet16_ddm_pval_annotated_results.txt > EZH2_genes_vs_randomSet16_Rank.csv
+~/PROJECTS/RANKPRODUCT/rank_product_exact_pvalue.R EZH2_genes_vs_randomSet16_Rank.csv
+vi EZH2_genes_vs_randomSet16_Rank_RP_meta_analysis.csv
+head -n 8 EZH2_genes_vs_randomSet16_Rank_RP_meta_analysis.csv
+head -n 8 EZH2_genes_vs_randomSet16_Rank_RP_meta_analysis.csv | cut -f1
+head -n 8 EZH2_genes_vs_randomSet16_Rank_RP_meta_analysis.csv | cut -f1 > ezh2_cofactors.list
+~/PROJECTS/WIMT/CLUTO/createSubMatrix.pl EZH2_genes.list hg19_genes_tf_targeted_5_jaccard_distmat_TAGC.vector > EZH2_genes_5.vector
+/home/pieterdb/PROJECTS/WIMTRYPSTEEN/input/vector2Network.pl ezh2_cofactors.list EZH2_genes_5.vector 0.05 > EZH2_genes_5.network
+/home/pieterdb/PROJECTS/WIMT/CLUTO/network2vector.pl EZH2_genes_5.network > EZH2_genes_5.vector
+/home/pieterdb/PROJECTS/WIMT/CLUTO/vector2cluto.R EZH2_genes_5.vector 
+vcluster -fulltree -clustercolumns -plotmatrix=EZH2_genes_5_1.ps EZH2_genes_5.cluto 1
+evince EZH2_genes_5_1.ps
+/home/pieterdb/PROJECTS/WIMT/WIMT_mRNA/network2Regulatory.pl EZH2_genes_5.network > EZH2_genes_5.regulatory

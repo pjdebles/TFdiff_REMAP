@@ -1,0 +1,133 @@
+=head1 NAME
+
+tfdiffWorker.pl
+
+=head1 SYNOPSIS
+
+   perl tfdiffWorker.pl [--host, -h <server>]
+                        [--port, -p <int>]
+                        [--tube, -t <tube_name>]
+                        [--job-root-directory, -d <directory>]
+                        [--max-jobs, -l <int>]
+                        [--script <file>]
+                        [--sleep-on-error <int>]
+                        [-v [, -v]]
+
+   perl tfdiffWorker.pl (--help|--man)
+
+=head1 DESCRIPTION
+
+This worker will take jobs from the beanstalkd-queue, fetch the data from
+C<${job-root-directory}/${job-id}> and process it.
+
+=head1 OPTIONS
+
+=over 8
+
+=item B<--help>
+
+Shows the help and exits.
+
+=item B<--man>
+
+Shows the extended, perldoc formatted, help and exits.
+
+=item B<--verbosity, -v> <error|warn|log|gossip|debug>
+
+Set the verbosity. Possible options:
+
+=over 4
+
+=item error
+
+Only show errors.
+
+=item warn
+
+Show errors and warnings
+
+=item log
+
+Show errors, warnings and log-messages
+
+=item gossip
+
+Show errors, warnings, log-messages and extra log-messages.
+
+=item debug
+
+Show as much info as possible (errors, warnings, log-messages, extra log-messages, +++)
+
+=back
+
+=back
+
+=head2 QUEUE
+
+=over 8
+
+=item B<--host, -h> <server>
+
+The server where the beanstalkd-queue is running.
+
+[Default: localhost]
+
+=item B<--port, -p> <int>
+
+The beanstalkd port.
+
+[Default: 11300]
+
+=item B<--tube, -t> <name>
+
+The beanstalkd-tube to reserve jobs from.
+
+[Default: tfdiff_encode]
+
+=back
+
+=head2 WORKER
+
+=over 8
+
+=item B<--job-root-directory, -d> <directory>
+
+Each job has a directory linked to it. The specified C<directory> is the
+root-directory where the worker will look for the job-data.
+
+[Default: F<./>]
+
+=item B<--max-age> <int>
+
+The maximum seconds the worker is allowed to age before self destructing.
+
+[Default: 86400]
+
+=item B<--max-jobs, -l> <int>
+
+The number of jobs to process before apoptosis
+
+[Default: 100]
+
+=item B<--script> <file>
+
+This is the script the worker will call to process the job.
+
+[Default: F<../scripts/ddmTyrant.pl>]
+
+=item B<--sleep-on-error> <int>
+
+To prevent a log flood, sleep C<sleep-on-error> seconds before advancing the
+loop.
+
+[Default: 15]
+
+=back
+
+=head1 AUTHORS
+
+=over 8
+
+=item Arne Soete (arne.soete@irc.vib-ugent.be)
+
+=back
